@@ -14,7 +14,7 @@
 <h1>Spiegel.de: Free audio</h1>
 <input autofocus type="text" size="200"
        value="https://www.spiegel.de/netzwelt/web/crowdstrike-und-microsoft-wie-ein-misslungenes-update-weltweit-chaos-ausloeste-a-4fcbeb73-b4f5-4d9d-82c6-9795db8973ec"
-       id="urlInput" placeholder="Enter Spiegel.de URL" onkeydown="go(this)"><br><br>
+       id="urlInput" placeholder="Enter Spiegel.de URL" onfocus="this.value=''" onkeydown="go(this)"><br><br>
 <button onclick="extractArticleId()">Get audio</button>
 <br><br>
 <iframe width="100%" id="responseOutput"></iframe>
