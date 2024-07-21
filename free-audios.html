@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiegel.de: Free audio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+<h1>Spiegel.de: Free audio</h1>
+<input autofocus type="text" size="200"
+       value="https://www.spiegel.de/netzwelt/web/crowdstrike-und-microsoft-wie-ein-misslungenes-update-weltweit-chaos-ausloeste-a-4fcbeb73-b4f5-4d9d-82c6-9795db8973ec"
+       id="urlInput" placeholder="Enter Spiegel.de URL" onkeydown="go(this)"><br><br>
+<button onclick="extractArticleId()">Get audio</button>
+<br><br>
+<iframe width="100%" id="responseOutput"></iframe>
+
+<script>
+    urlInput.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            extractArticleId()
+        }
+    });
+
+    function extractArticleId() {
+        const urlInput = document.getElementById('urlInput').value;
+        const uuidRegex = /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/;
+        const match = urlInput.match(uuidRegex);
+
+        if (match) {
+            const uuid = match[0];
+            fetchData(uuid);
+        } else {
+            alert('No ArticleId found in the URL');
+        }
+    }
+
+    function fetchData(uuid) {
+        const apiUrl = `https://omny.fm/api/orgs/5ac1e950-45c7-4eb7-87c0-aa0f018441b8/clips/externalId?value=${uuid}`;
+
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                // get EmbedUrl and show in an iframe
+                const embedUrl = data.EmbedUrl;
+                document.getElementById('responseOutput').src = embedUrl
+
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                document.getElementById('responseOutput').textContent = 'Error fetching data';
+            });
+    }
+</script>
+</body>
+</html>
